@@ -73,7 +73,12 @@
 					
 						<div class="search-wrapper">
 							<input id="searchInput" name="searchval" type="text" placeholder="Buscar..." class="search-input" />
-							<span class="clear-btn" id="clearBtn">×</span>
+							<span class="clear-btn" id="clearBtn">
+								<i class="fa-solid fa-x"></i>
+							</span>
+							<span class="refresh-btn" onclick="location.reload();">
+								<i class="fa-solid fa-rotate-right"></i>
+							</span>
 						</div>
 							
 						<select name="searchtype">
@@ -83,14 +88,9 @@
 						</select>
 						<button class="btn" onclick="formCommandSubmit('search')">Search</button>
 					</div>
-
-					<div class="filters">
-						
-					</div>
 					
 					<div class="actions">
 						<button class="btn" onclick="formCommandSubmit('download'); return false;">Download</button>
-						<button class="btn secondary" type="button" onclick="window.location.href='amuleweb-main-search.php'">Update</button>
 					</div>
 						
 					<!-- RESULTS -->
