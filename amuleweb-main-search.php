@@ -3,8 +3,9 @@
 <head>
     <title>aMule control panel</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">	
+	<script src="script.js"></script>
+	
     <?php
     if ($_SESSION["auto_refresh"] > 0) {
         echo "<script>
@@ -56,64 +57,7 @@
 <body>
 	<div class="layout">
 
-		<div class="menu-toggle">
-			<button onclick="toggleMenu()">
-				<i class="fa fa-bars"></i>
-			</button>
-		</div>
-
-		<div class="sidebar" id="sidebar">
-		
-			<div id="logo">
-				
-			</div>
-		
-			<div class="sidebar-menu">
-
-				<a href="amuleweb-main-dload.php">
-					<i class="fa fa-download"></i> Transferencias
-				</a>
-
-				<a href="amuleweb-main-search.php">
-					<i class="fa fa-search"></i> Buscar
-				</a>
-
-				<a href="amuleweb-main-servers.php">
-					<i class="fa fa-server"></i> Servidores
-				</a>
-
-				<a href="amuleweb-main-kad.php">
-					<i class="fa fa-link"></i> Kad
-				</a>
-
-				<a href="amuleweb-main-stats.php">
-					<i class="fa fa-chart-bar"></i> Estadísticas
-				</a>
-
-				<a href="amuleweb-main-prefs.php">
-					<i class="fa fa-cog"></i> Configuración
-				</a>
-
-				<a href="login.php">
-					<i class="fa fa-sign-out-alt"></i> Salir
-				</a>
-
-			</div>
-
-		</div>
-
-		<script>
-			function toggleMenu()
-			{
-				var menu = document.getElementById("sidebar");
-
-				if (menu.className.indexOf("open") == -1) {
-					menu.className += " open";
-				} else {
-					menu.className = menu.className.replace(" open","");
-				}
-			}
-		</script>
+		<div id="navigation-container"></div>
 		
 		<div class="content-area">
 
@@ -308,40 +252,7 @@
 					aMule Web UI custom
 				</div>
 			</div>
-			<script>
-				function loadStats() {
 
-					fetch("conn_info.php")
-						.then(function(r) {
-							return r.text();
-						})
-						.then(function(html) {
-							document.getElementById("footer-stats").innerHTML = html;
-						})
-						.catch(function() {
-							document.getElementById("footer-stats").innerHTML = "Error cargando stats";
-						});
-				} 
-
-				// primera carga
-				loadStats();
-
-				// refresco cada 10s (o usa $_SESSION["auto_refresh"] si quieres)
-				setInterval(loadStats, 1000);
-				
-				const current = window.location.pathname.split('/').pop();
-
-				document.querySelectorAll('.sidebar a').forEach(link => {
-				  const href = link.getAttribute('href');
-
-				  if (href === current) {
-					link.classList.add('active');
-				  } else {
-					link.classList.remove('active');
-				  }
-				});
-			</script>
-			
 		</div>
 
 	</div> <!-- layout -->
@@ -391,7 +302,12 @@
 		  input.focus();
 		  clearBtn.style.display = 'none';
 		});
-		
+
+		loadComponent("navigation.php", "navigation-container");
+		loadComponent("conn_info.php", "footer-stats");
+
+		// refresco cada 10s (o usa $_SESSION["auto_refresh"] si quieres)
+		setInterval(loadComponent("conn_info.php", "footer-stats"), 10000);		
 	</script>
 	
 </body>
