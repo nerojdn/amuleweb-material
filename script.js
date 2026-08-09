@@ -25,3 +25,43 @@ function highlightNavigation() {
       }
     });
 }
+
+function updateSelectionBar() {
+  const cards = document.querySelectorAll(".card");
+
+  let selectedCount = 0;
+
+  cards.forEach((card) => {
+    const checkbox = card.querySelector('input[type="checkbox"]');
+
+    if (!checkbox) {
+      return;
+    }
+
+    if (checkbox.checked) {
+      selectedCount++;
+
+      card.classList.add("selected");
+    } else {
+      card.classList.remove("selected");
+    }
+  });
+
+  const floatingActions = document.getElementById("floatingActions");
+
+  const selectedCountElement = document.getElementById("selectedCount");
+
+  if (!floatingActions) {
+    return;
+  }
+
+  if (selectedCount > 0) {
+    floatingActions.classList.add("visible");
+
+    if (selectedCountElement) {
+      selectedCountElement.textContent = "Descargar (" + selectedCount + ")";
+    }
+  } else {
+    floatingActions.classList.remove("visible");
+  }
+}

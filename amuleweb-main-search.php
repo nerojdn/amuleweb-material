@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>aMule control panel</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">	
-	<script src="script.js"></script>
-	
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="script.js"></script>
+
     <?php
     if ($_SESSION["auto_refresh"] > 0) {
         echo "<script>
@@ -16,9 +17,10 @@
         </script>";
     }
     ?>
-	
-	<script language="JavaScript" type="text/JavaScript">
-		function formCommandSubmit(command)
+
+    <script language="JavaScript" type="text/JavaScript">
+
+        function formCommandSubmit(command)
 		{
 			<?php
 				if ($_SESSION["guest_login"] != 0) {
@@ -36,67 +38,84 @@
 					return;
 				}
 			}
+			
 			var frm=document.forms.mainform
 			frm.command.value=command
 			frm.submit()
 		}
 
-		function selectAll(check)
+		function selectAll(checkAll)
 		{
-			var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+			var checkboxes = document.querySelectorAll(
+				'.card input[type="checkbox"]'
+			);
+
 			checkboxes.forEach(function(checkbox) {
-				checkbox.checked = check.checked;
+				checkbox.checked = checkAll.checked;
 			});
+
+			updateSelectionBar();
 		}
+
+		updateSelectionBar();
+
 	</script>
-	
+
     <link href="style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 
 <body>
-	<div class="layout">
+    <div class="layout">
 
-		<div id="navigation-container"></div>
-		
-		<div class="content-area">
+        <div id="navigation-container"></div>
 
-			<main class="main">
+        <div class="content-area">
 
-				<h1>Buscar</h1>
+            <main class="main">
 
-				<form name="mainform" action="amuleweb-main-search.php" method="post" class="search-box">
+                <h1>Buscar</h1>
 
-					<input type="hidden" name="command" value="" />
+                <form name="mainform" action="amuleweb-main-search.php" method="post" class="search-box">
 
-					<div class="search-row">
-					
-						<div class="search-wrapper">
-							<input id="searchInput" name="searchval" type="text" placeholder="Buscar..." class="search-input" />
-							<span class="clear-btn" id="clearBtn">
-								<i class="fa-solid fa-x"></i>
-							</span>
-							<span class="refresh-btn" onclick="location.reload();">
-								<i class="fa-solid fa-rotate-right"></i>
-							</span>
-						</div>
-							
-						<select name="searchtype">
-							<option selected>Local</option>
-							<option>Global</option>
-							<option>Kad</option>
-						</select>
-						<button class="btn" onclick="formCommandSubmit('search')">Search</button>
-					</div>
-					
-					<div class="actions">
-						<button class="btn" onclick="formCommandSubmit('download'); return false;">Download</button>
-					</div>
-						
-					<!-- RESULTS -->
-					<div class="results">
+                    <input type="hidden" name="command" value="" />
 
-						<?php				
+                    <div class="search-row">
+
+                        <div class="search-wrapper">
+                            <input id="searchInput" name="searchval" type="text" placeholder="Buscar..."
+                                class="search-input" />
+                            <span class="clear-btn" id="clearBtn">
+                                <i class="fa-solid fa-x"></i>
+                            </span>
+                            <span class="refresh-btn" onclick="window.location.href='amuleweb-main-search.php'">
+                                <i class="fa-solid fa-rotate-right"></i>
+                            </span>
+                        </div>
+
+                        <select name="searchtype">
+                            <option selected>Local</option>
+                            <option>Global</option>
+                            <option>Kad</option>
+                        </select>
+                        <button class="btn" onclick="formCommandSubmit('search')">Search</button>
+                    </div>
+
+                    <div class="actions" id="desktopActions">
+                        <button class="btn" onclick="formCommandSubmit('download'); return false;">Download</button>
+                    </div>
+
+                    <div id="floatingActions">
+                        <button class="btn floating-btn" onclick="formCommandSubmit('download');">
+                            <i class="fa fa-download"></i>
+                            <span id="selectedCount"> Descargar </span>
+                        </button>
+                    </div>
+
+                    <!-- RESULTS -->
+                    <div class="results">
+
+                        <?php				
 							function CastToXBytes($size)
 							{
 								// Emit the raw byte count; the unit formatting is done
@@ -149,14 +168,14 @@
 							}
 
 							if ($_SESSION["guest_login"] == 0) {
-								if ( $HTTP_GET_VARS["command"] == "search") {
+								if ($HTTP_GET_VARS["command"] == "search") {
 									$search_type = -1;
 									switch($HTTP_GET_VARS["searchtype"]) {
 										case "Local": $search_type = 0; break;
 										case "Global": $search_type = 1; break;
 										case "Kad": $search_type = 2; break;
 									}
-									
+
 									amule_do_search_start_cmd($HTTP_GET_VARS["searchval"], "", "", $search_type, "", "", "");
 									
 								} elseif ( $HTTP_GET_VARS["command"] == "download") {
@@ -171,6 +190,7 @@
 								} else {
 								}
 							}		
+
 							$search = amule_load_vars("searchresult");
 
 							// Column-header links use ?sort=<key> and TOGGLE the sort
@@ -204,7 +224,7 @@
 							if (count($search) > 0) {
 								
 								echo "<div class='results-header'>";
-								echo "	<div class='select-all'><input type='checkbox' name='selectAllFiles'onclick='selectAll(this)' /></div>";
+								echo "	<div class='select-all'><input type='checkbox' name='selectAllFiles' onclick='selectAll(this)' /></div>";
 								echo "	<div class='sort-name'><a href='amuleweb-main-search.php?sort=name'>Nombre</a></div>";
 								echo "	<div class='sort-size'><a href='amuleweb-main-search.php?sort=size'>Tamaño</a></div>";
 								echo "	<div class='sort-sources'><a href='amuleweb-main-search.php?sort=sources'>Fuentes</a></div>";
@@ -236,29 +256,29 @@
 									echo "</div>";
 								}
 							}
-						?>						
+						?>
 
-					</div>
+                    </div>
 
-				</form>
+                </form>
 
-			</main>
-			
-			<div class="footer">
-				<div class="stats" id="footer-stats">
-					Cargando...
-				</div>
-				<div class="brand">
-					aMule Web UI custom
-				</div>
-			</div>
+            </main>
 
-		</div>
+            <div class="footer">
+                <div class="stats" id="footer-stats">
+                    Cargando...
+                </div>
+                <div class="brand">
+                    aMule Web UI custom
+                </div>
+            </div>
 
-	</div> <!-- layout -->
-	
-	<script type="text/JavaScript">
-		// Format the raw byte counts emitted by the backend (spans with class
+        </div>
+
+    </div> <!-- layout -->
+
+    <script type="text/JavaScript">
+        // Format the raw byte counts emitted by the backend (spans with class
 		// "js-size") into human-readable units. Done here in the browser because
 		// the webserver's PHP interpreter lacks sprintf/round.
 		function formatBytes(value) {
@@ -277,17 +297,24 @@
 		})();
 		
 		document.querySelectorAll('.card').forEach(card => {
-		  card.addEventListener('click', (e) => {
-			// Evitar doble toggle si se hace click directamente en el checkbox
-			if (e.target.tagName.toLowerCase() === 'input') return;
 
-			const checkbox = card.querySelector('input[type="checkbox"]');
-			if (checkbox) {
-			  checkbox.checked = !checkbox.checked;
-			}
+		  	card.addEventListener('click', (e) => {
 
-			card.classList.toggle('selected', checkbox.checked);
-		  });
+				// Si hemos pulsado directamente el checkbox, no cambiamos su estado manualmente.
+				if (e.target.tagName.toLowerCase() === 'input') {
+					updateSelectionBar();
+					return;
+				}
+
+				const checkbox = card.querySelector('input[type="checkbox"]');
+
+				if (checkbox) {
+				checkbox.checked = !checkbox.checked;
+				updateSelectionBar();
+				}
+
+		  	});
+
 		});
 		
 		const input = document.getElementById('searchInput');
@@ -307,8 +334,12 @@
 		loadComponent("conn_info.php", "footer-stats");
 
 		// refresco cada 10s (o usa $_SESSION["auto_refresh"] si quieres)
-		setInterval(loadComponent("conn_info.php", "footer-stats"), 10000);		
+		setInterval(function() {
+			loadComponent("conn_info.php", "footer-stats");
+		}, 10000);
+
 	</script>
-	
+
 </body>
+
 </html>
