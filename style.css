@@ -488,50 +488,27 @@ a {
 
 }
 
-
 .results::-webkit-scrollbar {
-
     width: 8px;
-
 }
-
 
 .results::-webkit-scrollbar-track {
-
     background: transparent;
-
 }
-
-
 
 .results::-webkit-scrollbar-thumb {
-
-    background:
-
-        #64748b;
-
-
-    border-radius:
-
-        10px;
-
+    background:        #64748b;
+    border-radius:        10px;
 }
-
 
 
 /* =========================================================
    CABECERA RESULTADOS
    ========================================================= */
 
-
 .results-header {
-
-
     display: none;
-
-
 }
-
 
 
 /* =========================================================
@@ -1001,7 +978,6 @@ a {
    NAVEGACION INFERIOR MOVIL
    ========================================================= */
 
-
 @media (max-width: 768px) {
 
     .main h1 {
@@ -1063,3 +1039,238 @@ a {
 /* =========================================================
    FIN CSS MOBILE-FIRST
    ========================================================= */
+
+   /* =========================================================
+   MOBILE SORT
+========================================================= */
+
+.mobile-sort {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 8px;
+}
+
+.sort-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 7px 12px;
+
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+
+    background: var(--bg-panel);
+    color: var(--text-muted);
+
+    font-size: .82rem;
+    cursor: pointer;
+
+    transition:
+        background .2s ease,
+        color .2s ease,
+        border-color .2s ease;
+}
+
+.sort-pill:hover {
+    background: var(--bg-panel-hover);
+    color: var(--text-main);
+}
+
+.sort-pill i {
+    color: var(--accent);
+}
+
+
+/* =========================================================
+   SORT BOTTOM SHEET
+========================================================= */
+
+.sort-sheet-backdrop {
+    display: none;
+
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0, 0, 0, .45);
+
+    z-index: 400;
+
+    opacity: 0;
+    transition: opacity .2s ease;
+}
+
+.sort-sheet {
+    position: fixed;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background: var(--bg-panel);
+
+    border-radius:
+        18px 18px 0 0;
+
+    padding:
+        10px 16px 25px;
+
+    z-index: 401;
+
+    transform: translateY(100%);
+    transition: transform .25s ease;
+
+    box-shadow:
+        0 -8px 30px rgba(0, 0, 0, .35);
+}
+
+.sort-sheet-handle {
+    width: 40px;
+    height: 4px;
+
+    margin:
+        0 auto 15px;
+
+    border-radius: 4px;
+
+    background: var(--text-soft);
+}
+
+.sort-sheet-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 15px;
+
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+.sort-sheet-header button {
+    width: 34px;
+    height: 34px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: var(--bg-panel-hover);
+    color: var(--text-muted);
+
+    cursor: pointer;
+}
+
+.sort-options {
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+.sort-option {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 14px 10px;
+
+    border-bottom:
+        1px solid var(--border-color);
+
+    color: var(--text-main);
+
+    text-decoration: none;
+
+    font-size: .95rem;
+}
+
+.sort-option > span {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sort-option > span i {
+    width: 20px;
+
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.sort-check {
+    visibility: hidden;
+    color: var(--accent);
+}
+
+.sort-option.active .sort-check {
+    visibility: visible;
+}
+
+.sort-direction {
+    margin-top: 18px;
+}
+
+.sort-direction-title {
+    margin-bottom: 8px;
+
+    color: var(--text-muted);
+
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.sort-direction-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 8px;
+}
+
+.sort-direction-btn {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 11px;
+
+    border:
+        1px solid var(--border-color);
+
+    border-radius:
+        var(--radius-small);
+
+    background:
+        var(--bg-main);
+
+    color:
+        var(--text-muted);
+
+    cursor: pointer;
+}
+
+.sort-direction-btn.active {
+    background:
+        rgba(99, 102, 241, .15);
+
+    border-color:
+        var(--accent);
+
+    color:
+        white;
+}
+
+@media (min-width: 768px) {
+
+    .mobile-sort,
+    .sort-sheet,
+    .sort-sheet-backdrop {
+        display: none;
+    }
+
+}

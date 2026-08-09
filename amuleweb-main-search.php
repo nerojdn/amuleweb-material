@@ -112,6 +112,13 @@
                         </button>
                     </div>
 
+					<div class="mobile-sort">
+						<button type="button" class="sort-pill" id="mobileSortButton">
+							<i class="fa-solid fa-arrow-down-wide-short"></i>
+							<span id="mobileSortLabel">Ordenar</span>
+						</button>
+					</div>
+
                     <!-- RESULTS -->
                     <div class="results">
 
@@ -204,13 +211,35 @@
 							// controlled value from being stored in $_SESSION["search_sort"]
 							// and later reflected into rendered HTML (#869 follow-up).
 							$sort_raw = isset($HTTP_GET_VARS["sort"]) ? $HTTP_GET_VARS["sort"] : "";
+							$sort_dir = isset($HTTP_GET_VARS["sortdir"]) ? $HTTP_GET_VARS["sortdir"] : "";
+
 							if ($sort_raw == "size" || $sort_raw == "name" || $sort_raw == "sources") {
+
 								$sort_order = $sort_raw;
-								if ( $_SESSION["search_sort_reverse"] == "" ) {
+
+								/*
+								* Mobile sort control can explicitly request a direction.
+								* Desktop keeps the original toggle behaviour.
+								*/
+								if ($sort_dir == "asc") {
+									$_SESSION["search_sort_reverse"] = 1;
+								} 
+								elseif ($sort_dir == "desc") {
 									$_SESSION["search_sort_reverse"] = 0;
-								} else {
-									$_SESSION["search_sort_reverse"] = !$_SESSION["search_sort_reverse"];
+								} 
+								else {
+									/*
+									* Desktop: conserva el comportamiento original,
+									* alternando la dirección al pulsar la columna.
+									*/
+									if ($_SESSION["search_sort_reverse"] == "") {
+										$_SESSION["search_sort_reverse"] = 0;
+									} 
+									else {
+										$_SESSION["search_sort_reverse"] = !$_SESSION["search_sort_reverse"];
+									}
 								}
+
 							} else {
 								$sort_order = $_SESSION["search_sort"];
 							}
@@ -259,6 +288,67 @@
 						?>
 
                     </div>
+
+					<div class="sort-sheet-backdrop" id="sortSheetBackdrop"></div>
+
+					<div class="sort-sheet" id="sortSheet">
+
+						<div class="sort-sheet-handle"></div>
+
+						<div class="sort-sheet-header">
+							<span>Ordenar búsqueda</span>
+
+							<button type="button" id="sortSheetClose" aria-label="Cerrar">
+								<i class="fa-solid fa-xmark"></i>
+							</button>
+						</div>
+
+						<div class="sort-options">
+
+							<a class="sort-option" data-sort="name" data-dir="asc" href="#">
+								<span>
+									<i class="fa-solid fa-arrow-down-a-z"></i>Nombre
+								</span>
+								<i class="fa-solid fa-check sort-check"></i>
+							</a>
+
+							<a class="sort-option" data-sort="size" data-dir="desc" href="#">
+								<span>
+									<i class="fa-solid fa-maximize"></i>Tamaño
+								</span>
+								<i class="fa-solid fa-check sort-check"></i>
+							</a>
+
+							<a class="sort-option" data-sort="sources" data-dir="desc" href="#">
+								<span>
+									<i class="fa-solid fa-users"></i>Fuentes
+								</span>
+								<i class="fa-solid fa-check sort-check"></i>
+							</a>
+
+						</div>
+
+						<div class="sort-direction">
+
+							<div class="sort-direction-title">
+								Dirección
+							</div>
+
+							<div class="sort-direction-buttons">
+
+								<button type="button" class="sort-direction-btn" data-direction="asc">
+									<i class="fa-solid fa-arrow-up"></i>Ascendente
+								</button>
+
+								<button type="button" class="sort-direction-btn" data-direction="desc">
+									<i class="fa-solid fa-arrow-down"></i>Descendente
+								</button>
+
+							</div>
+
+						</div>
+
+					</div>
 
                 </form>
 
