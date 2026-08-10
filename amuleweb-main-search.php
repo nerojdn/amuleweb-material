@@ -2,20 +2,20 @@
 <html>
 
 <head>
-    <title>aMule control panel</title>
+    <title>aMule - Search</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="script.js"></script>
 
     <?php
-    if ($_SESSION["auto_refresh"] > 0) {
-        echo "<script>
-            setInterval(function() {
-                if (document.querySelectorAll('input[type=\"checkbox\"]:checked').length > 0) return;
-                location.reload();
-            }, " . (1000 * $_SESSION["auto_refresh"]) . ");
-        </script>";
-    }
+		if ($_SESSION["auto_refresh"] > 0) {
+			echo "<script>
+				setInterval(function() {
+					if (document.querySelectorAll('input[type=\"checkbox\"]:checked').length > 0) return;
+					location.reload();
+				}, " . (1000 * $_SESSION["auto_refresh"]) . ");
+			</script>";
+		}
     ?>
 
     <script language="JavaScript" type="text/JavaScript">
