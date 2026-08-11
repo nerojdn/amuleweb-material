@@ -1311,6 +1311,11 @@ a {
         transform .1s ease;
 }
 
+.download-card.selected {
+    border-color: var(--accent);
+    background: rgba(99, 102, 241, .15);
+}
+
 .download-card:active {
     transform: scale(.99);
 }
@@ -1398,6 +1403,116 @@ a {
 
     .download-card-check {
         display: block;
+    }
+
+}
+
+/* =========================================================
+   MOBILE DOWNLOAD ACTIONS
+   ========================================================= */
+
+#mobileDownloadActions {
+    position: fixed;
+
+    left: 16px;
+    right: 16px;
+    bottom: 80px;
+
+    z-index: 300;
+
+    background: var(--bg-panel);
+
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+
+    padding: 10px;
+
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, .4);
+
+    opacity: 0;
+    transform: translateY(20px);
+
+    pointer-events: none;
+
+    transition:
+        opacity .25s ease,
+        transform .25s ease;
+}
+
+#mobileDownloadActions.visible {
+    opacity: 1;
+    transform: translateY(0);
+
+    pointer-events: auto;
+}
+
+.mobile-download-selection {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    margin-bottom: 8px;
+
+    color: var(--text-muted);
+
+    font-size: .8rem;
+}
+
+.mobile-download-selection i {
+    color: var(--accent);
+}
+
+.mobile-download-action-buttons {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr 1fr;
+
+    gap: 7px;
+}
+
+.mobile-download-action {
+    display: flex;
+
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 4px;
+
+    min-height: 52px;
+
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-small);
+
+    background: var(--bg-main);
+    color: var(--text-muted);
+
+    cursor: pointer;
+
+    font-size: .75rem;
+}
+
+.mobile-download-action i {
+    font-size: 1rem;
+    color: var(--accent);
+}
+
+.mobile-download-action:active {
+    transform: scale(.97);
+}
+
+.mobile-download-action-danger i {
+    color: var(--danger);
+}
+
+@media (min-width: 768px) {
+
+    #mobileDownloadActions {
+        display: none;
     }
 
 }

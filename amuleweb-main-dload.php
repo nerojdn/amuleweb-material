@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="script.js"></script>
+	<script src="download.js"></script>
 
 		<?php
 			// Auto-refresh: reload on a timer, but skip while any checkbox is
@@ -49,10 +50,15 @@
 
 		function selectAll(check)
 		{
-			var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+			var checkboxes = document.querySelectorAll(
+				'.download-card input[type="checkbox"]'
+			);
+
 			checkboxes.forEach(function(checkbox) {
 				checkbox.checked = check.checked;
 			});
+
+			updateDownloadSelection();
 		}
 	</script>
 	<link href="style.css" rel="stylesheet">
@@ -69,118 +75,226 @@
 
                 <h1>Transferencias</h1>
 
-				<div class="downloads-mobile">
+				<form action="amuleweb-main-dload.php" method="post" name="mainform" id="mainform">
 
-					<?php 
+					<input type="hidden" name="command" value="">
 
-					// Whitelist against the column keys my_cmp() actually understands
-					// (the switch() above). Anything not in the list is dropped to "",
-					// which falls through to the "no sort change" branch below.
-					// This prevents an attacker-controlled value from being stored in
-					// $_SESSION["download_sort"] and later reflected into rendered HTML
-					// (#869 follow-up; same fix applied to shared and servers pages).
-					$sort_raw = isset($HTTP_GET_VARS["sort"]) ? $HTTP_GET_VARS["sort"] : "";
-					if ($sort_raw == "size" || $sort_raw == "size_done" || $sort_raw == "progress" ||
-						$sort_raw == "name" || $sort_raw == "speed" || $sort_raw == "srccount" ||
-						$sort_raw == "status" || $sort_raw == "prio") {
-						$sort_order = $sort_raw;
-					} else {
-						$sort_order = "";
-					}
+					<div class="downloads-mobile">
 
-					if ( $sort_order == "" ) {
-						$sort_order = $_SESSION["download_sort"];
-					} else {
-						if ( $_SESSION["download_sort_reverse"] == "" ) {
-							$_SESSION["download_sort_reverse"] = 0;
-						} else {
-							if ( $HTTP_GET_VARS["sort"] != '') {
-								$_SESSION["download_sort_reverse"] = !$_SESSION["download_sort_reverse"];
+						<?php 
+
+						function CastToXBytes($size, &$count) {
+							// Emit the raw byte count; the unit formatting is done
+							// client-side (see the js-size script at the end of the page).
+							$count += $size;
+							return '<span class="js-size">' . $size . '</span>';
+						}
+
+						function StatusString($file)
+						{
+							if ( $file->status == 7 ) {
+								return "Paused";
+							} elseif ( $file->src_count_xfer > 0 ) {
+								return "Downloading";
+							} else {
+								return "Waiting";
 							}
 						}
-					}
-					//var_dump($_SESSION);
-					$sort_reverse = $_SESSION["download_sort_reverse"];
-					if ( $sort_order != "" ) {
-						$_SESSION["download_sort"] = $sort_order;
-						usort(&$downloads, "my_cmp");
-					}
 
-					$downloads = amule_load_vars("downloads");
-					$fakevar = 0; 									
+						if ( ($HTTP_GET_VARS["command"] != "") && ($_SESSION["guest_login"] == 0) ) {
+							foreach ( $HTTP_GET_VARS as $name => $val) {
+								// this is file checkboxes
+								if ( (strlen($name) == 32) and ($val == "on") ) {
+									//var_dump($name);
+									amule_do_download_cmd($name, $HTTP_GET_VARS["command"]);
+								}
+							}
+						}
 
-					function CastToXBytes($size, &$count) {
-						// Emit the raw byte count; the unit formatting is done
-						// client-side (see the js-size script at the end of the page).
-						$count += $size;
-						return '<span class="js-size">' . $size . '</span>';
-					}
-
-					function StatusString($file)
-					{
-						if ( $file->status == 7 ) {
-							return "Paused";
-						} elseif ( $file->src_count_xfer > 0 ) {
-							return "Downloading";
+						$downloads = amule_load_vars("downloads");
+						$fakevar = 0; 
+						// Whitelist against the column keys my_cmp() actually understands
+						// (the switch() above). Anything not in the list is dropped to "",
+						// which falls through to the "no sort change" branch below.
+						// This prevents an attacker-controlled value from being stored in
+						// $_SESSION["download_sort"] and later reflected into rendered HTML
+						// (#869 follow-up; same fix applied to shared and servers pages).
+						$sort_raw = isset($HTTP_GET_VARS["sort"]) ? $HTTP_GET_VARS["sort"] : "";
+						if ($sort_raw == "size" || $sort_raw == "size_done" || $sort_raw == "progress" ||
+							$sort_raw == "name" || $sort_raw == "speed" || $sort_raw == "srccount" ||
+							$sort_raw == "status" || $sort_raw == "prio") {
+							$sort_order = $sort_raw;
 						} else {
-							return "Waiting";
-						}
-					}
-
-					foreach ($downloads as $file) {
-
-						$status = StatusString($file);
-
-						$progress = 0;
-						if ($file->size > 0) {
-							$progress = ($file->size_done * 100) / $file->size;
+							$sort_order = "";
 						}
 
-						echo'<div class="download-card">';
+						if ( $sort_order == "" ) {
+							$sort_order = $_SESSION["download_sort"];
+						} else {
+							if ( $_SESSION["download_sort_reverse"] == "" ) {
+								$_SESSION["download_sort_reverse"] = 0;
+							} else {
+								if ( $HTTP_GET_VARS["sort"] != '') {
+									$_SESSION["download_sort_reverse"] = !$_SESSION["download_sort_reverse"];
+								}
+							}
+						}
+						//var_dump($_SESSION);
+						$sort_reverse = $_SESSION["download_sort_reverse"];
+						if ( $sort_order != "" ) {
+							$_SESSION["download_sort"] = $sort_order;
+							usort(&$downloads, "my_cmp");
+						}
 
-						echo'	<div class="download-card-top">';
-						echo'		<div class="download-card-check">';
-						echo'			<input type="checkbox" name="' . $file->hash . '">';
-						echo'		</div>';
-						
-						echo'		<div class="download-card-name">' . htmlspecialchars($file->name) . '</div>';
-						echo'	</div>';
+						foreach ($downloads as $file) {
 
-						echo'	<div class="download-card-progress">';
-						echo'		<div class="download-progress-bar" style="width: ' . $progress . '%"></div>';
-						echo'	</div>';
+							$status = StatusString($file);
 
-						echo'	<div class="download-card-meta">';
-						echo'		<span>' . (int)$progress . '%</span>';
-						echo'		<span>' . CastToXBytes($file->size_done, $fakevar) . '/' . CastToXBytes($file->size, $fakevar) . '</span>';
-						echo'	</div>';
+							$progress = 0;
+							if ($file->size > 0) {
+								$progress = ($file->size_done * 100) / $file->size;
+							}
 
-						echo'	<div class="download-card-info">';
-						echo'		<span>';
-						echo'			<i class="fa-solid fa-download"></i>';
-											($file->speed > 0)
-											? CastToXBytes($file->speed, $fakevar) . "/s"
-											: "-";								
-						echo'		</span>';
-						echo'		<span>';
-						echo'			<i class="fa-solid fa-users"></i>' . $file->src_count;
-						echo'		</span>';
-						echo'		<span>' . htmlspecialchars($status) . '</span>';
-						echo'	</div>';
+							echo'<div class="download-card" data-status="' . htmlspecialchars($status) . '">';
 
-						echo'</div>';
+							echo'	<div class="download-card-top">';
+							echo'		<div class="download-card-check">';
+							echo'			<input type="checkbox" name="' . $file->hash . '">';
+							echo'		</div>';
+							
+							echo'		<div class="download-card-name">' . htmlspecialchars($file->name) . '</div>';
+							echo'	</div>';
 
-					} ?>
-				
-				</div>
+							echo'	<div class="download-card-progress">';
+							echo'		<div class="download-progress-bar" style="width: ' . $progress . '%"></div>';
+							echo'	</div>';
 
-				
+							echo'	<div class="download-card-meta">';
+							echo'		<span>' . (int)$progress . '%</span>';
+							echo'		<span>' . CastToXBytes($file->size_done, $fakevar) . '/' . CastToXBytes($file->size, $fakevar) . '</span>';
+							echo'	</div>';
 
+							echo'	<div class="download-card-info">';
+							echo'		<span>';
+							echo'			<i class="fa-solid fa-download"></i>';
+												($file->speed > 0)
+												? CastToXBytes($file->speed, $fakevar) . "/s"
+												: "-";								
+							echo'		</span>';
+							echo'		<span>';
+							echo'			<i class="fa-solid fa-users"></i>' . $file->src_count;
+							echo'		</span>';
+							echo'		<span>' . htmlspecialchars($status) . '</span>';
+							echo'	</div>';
 
+							echo'</div>';
 
+						} ?>
+					
+					</div>
 
+					<div id="mobileDownloadActions">
 
+						<div class="mobile-download-selection">
+							<i class="fa-solid fa-check"></i>
+							<span id="downloadSelectedCount">0</span>
+							<span>seleccionada(s)</span>
+						</div>
 
+						<div class="mobile-download-action-buttons">
+
+							<button
+								type="button"
+								data-action="pause"
+								class="mobile-download-action"
+								id="mobilePauseButton"
+								onclick="formCommandSubmit('pause')">
+								<i class="fa-solid fa-pause"></i>
+								<span>Pausar</span>
+							</button>
+
+							<button
+								type="button"
+								data-action="resume"
+								class="mobile-download-action"
+								id="mobileResumeButton"
+								onclick="formCommandSubmit('resume')">
+								<i class="fa-solid fa-play"></i>
+								<span>Reanudar</span>
+							</button>
+
+							<button
+								type="button"
+								data-action="cancel"
+								class="mobile-download-action mobile-download-action-danger"
+								onclick="formCommandSubmit('cancel')">
+								<i class="fa-solid fa-xmark"></i>
+								<span>Cancelar</span>
+							</button>
+
+						</div>
+
+					</div>
+
+					<div class="downloads-desktop">
+
+						<div class="downloads-header">
+						    <div class="download-header-check">
+						        <input type="checkbox" name="selectAllDownloads" onclick="selectAllDownloads(this)">
+						    </div>
+
+						    <div class="download-header-name">
+						        <a href="amuleweb-main-dload.php?sort=name">Nombre</a>
+						    </div>
+
+						    <div class="download-header-size">
+						        <a href="amuleweb-main-dload.php?sort=size">Tamaño</a>
+						    </div>
+
+						    <div class="download-header-completed">
+						        <a href="amuleweb-main-dload.php?sort=size_done">Completado</a>
+						    </div>
+
+						    <div class="download-header-speed">
+						        <a href="amuleweb-main-dload.php?sort=speed">Velocidad</a>
+						    </div>
+
+						    <div class="download-header-progress">
+						        <a href="amuleweb-main-dload.php?sort=progress">Progreso</a>
+						    </div>
+
+						    <div class="download-header-sources">
+						        <a href="amuleweb-main-dload.php?sort=srccount">Fuentes</a>
+						    </div>
+
+						    <div class="download-header-status">
+						        <a href="amuleweb-main-dload.php?sort=status">Estado</a>
+						    </div>
+
+						    <div class="download-header-priority">
+						        <a href="amuleweb-main-dload.php?sort=prio">Prioridad</a>
+						    </div>
+
+						</div>
+
+					</div>
+
+				</form>
+
+			</main>
+
+			<div class="footer">
+                <div class="stats" id="footer-stats">
+                    Cargando...
+                </div>
+                <div class="brand">
+                    aMule Web UI custom
+                </div>
+            </div>
+
+		</div>
+
+	</div>
 
 	<script type="text/JavaScript">
 		// Format the raw byte counts emitted by the backend (spans with class
@@ -208,6 +322,35 @@
 		setInterval(function() {
 			loadComponent("conn_info.php", "footer-stats");
 		}, 10000);
+		
+		document.querySelectorAll('.download-card').forEach(card => {
+
+		card.addEventListener('click', function (e) {
+
+			// Si hacemos click en el checkbox, no hacemos nada más (el evento ya se ha disparado)
+			if (e.target.tagName.toLowerCase() === 'input') {
+				updateDownloadSelection();
+				return;
+			}
+
+			const checkbox = card.querySelector('input[type="checkbox"]');
+
+			if (checkbox) {
+				checkbox.checked = !checkbox.checked;
+
+				if (checkbox.checked) {
+					card.classList.add("selected");
+				} else {
+					card.classList.remove("selected");
+				}
+
+				updateDownloadSelection();
+			}
+
+		});
+
+	});
+
 	</script>
 
 </body>
