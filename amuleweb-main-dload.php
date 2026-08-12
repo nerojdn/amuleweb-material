@@ -57,8 +57,7 @@
 			checkboxes.forEach(function(checkbox) {
 				checkbox.checked = check.checked;
 			});
-
-			updateMobileDownloadSelection();
+			
 			updateDesktopDownloadSelection();
 		}
 	</script>
@@ -131,7 +130,7 @@
 								echo '<div class="downloads-header">
 
 										<div class="download-header-check">
-											<input type="checkbox" name="selectAllDownloads" onclick="selectAll(this)">
+											<input type="checkbox" name="selectAllFiles" onclick="selectAll(this)">
 										</div>
 
 										<div class="download-header-name">
@@ -359,7 +358,48 @@
 
 						</div>
 
-					</div>					
+					</div>
+										
+					<div id="desktopDownloadActions">
+
+						<div class="desktop-download-selection">
+							<i class="fa-solid fa-check"></i>
+							<span id="desktopDownloadSelectedCount">0</span>
+							<span>seleccionada(s)</span>
+						</div>
+
+						<div class="desktop-download-action-buttons">
+
+							<button
+								type="button"
+								data-action="pause"
+								class="desktop-download-action"
+								onclick="formCommandSubmit('pause')">
+								<i class="fa-solid fa-pause"></i>
+								<span>Pausar</span>
+							</button>
+
+							<button
+								type="button"
+								data-action="resume"
+								class="desktop-download-action"
+								onclick="formCommandSubmit('resume')">
+								<i class="fa-solid fa-play"></i>
+								<span>Reanudar</span>
+							</button>
+
+							<button
+								type="button"
+								data-action="cancel"
+								class="desktop-download-action desktop-download-action-danger"
+								onclick="formCommandSubmit('cancel')">
+								<i class="fa-solid fa-xmark"></i>
+								<span>Cancelar</span>
+							</button>
+
+						</div>
+
+					</div>
 
 				</form>
 
