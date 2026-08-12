@@ -178,6 +178,27 @@ function updateDesktopDownloadSelection() {
     var selectedRows = getSelectedDownloadRows();
     var selectedCount = selectedRows.length;
 
+    var allCheckboxes = document.querySelectorAll(
+        '.downloads-desktop .download-row input[type="checkbox"]'
+    );
+
+    var selectAllCheckbox = document.querySelector(
+        '.downloads-header input[name="selectAllFiles"]'
+    );
+
+    var totalCount = allCheckboxes.length;
+
+    if (selectAllCheckbox) {
+
+        selectAllCheckbox.checked =
+            totalCount > 0 &&
+            selectedCount === totalCount;
+
+        selectAllCheckbox.indeterminate =
+            selectedCount > 0 &&
+            selectedCount < totalCount;
+    }
+
     var actions = getDesktopDownloadActions(selectedRows);
 
     document.querySelectorAll('.download-row').forEach(function(row) {
