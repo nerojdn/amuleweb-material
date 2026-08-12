@@ -128,6 +128,7 @@
 							function renderDownloadDesktopHeader()
 							{
 								echo '<div class="downloads-header">
+
 										<div class="download-header-check">
 											<input type="checkbox" name="selectAllDownloads" onclick="selectAllDownloads(this)">
 										</div>
@@ -159,10 +160,7 @@
 										<div class="download-header-status">
 											<a href="amuleweb-main-dload.php?sort=status">Estado</a>
 										</div>
-
-										<div class="download-header-priority">
-											<a href="amuleweb-main-dload.php?sort=prio">Prioridad</a>
-										</div>
+										
 									</div>';
 							}
 							
@@ -174,6 +172,8 @@
 								if ($file->size > 0) {
 									$progress = ($file->size_done * 100) / $file->size;
 								}
+
+								$fakevar = 0;
 
 								echo '<div class="download-row" data-status="' . htmlspecialchars($status) . '">';
 
@@ -189,19 +189,19 @@
 
 								// Tamaño
 								echo '    <div class="download-row-size">';
-								echo          CastToXBytes($file->size, $GLOBALS["fakevar"]);
+								echo          CastToXBytes($file->size, $fakevar);
 								echo '    </div>';
 
 								// Completado
 								echo '    <div class="download-row-completed">';
-								echo          CastToXBytes($file->size_done, $GLOBALS["fakevar"]);
+								echo          CastToXBytes($file->size_done, $fakevar);
 								echo '    </div>';
 
 								// Velocidad
 								echo '    <div class="download-row-speed">';
 
 								if ($file->speed > 0) {
-									echo CastToXBytes($file->speed, $GLOBALS["fakevar"]) . '/s';
+									echo CastToXBytes($file->speed, $fakevar) . '/s';
 								} else {
 									echo '-';
 								}
@@ -225,11 +225,6 @@
 								// Estado
 								echo '    <div class="download-row-status">';
 								echo          htmlspecialchars($status);
-								echo '    </div>';
-
-								// Prioridad
-								echo '    <div class="download-row-priority">';
-								echo          htmlspecialchars(PrioString($file));
 								echo '    </div>';
 
 								echo '</div>';
