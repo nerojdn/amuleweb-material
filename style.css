@@ -1515,4 +1515,74 @@ a {
         display: none;
     }
 
+
+    .downloads-desktop {
+        width: 100%;
+    }
+
+    .downloads-header,
+    .download-row {
+        display: grid;
+
+        grid-template-columns:
+            40px
+            minmax(250px, 1fr)
+            100px
+            110px
+            110px
+            100px
+            90px
+            120px
+            110px;
+
+        align-items: center;
+    }
+
+    .downloads-header {
+        min-height: 42px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .download-row {
+        min-height: 48px;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.15);
+        font-size: 13px;
+    }
+
+    .download-row-check,
+    .download-header-check {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .download-row-name {
+        min-width: 0;
+        padding: 8px 12px 8px 0;
+
+        /*
+        * Importante:
+        * permite que nombres largos salten de línea
+        * en lugar de provocar overflow horizontal.
+        */
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    .download-row-size,
+    .download-row-completed,
+    .download-row-speed,
+    .download-row-progress,
+    .download-row-sources,
+    .download-row-status,
+    .download-row-priority {
+        padding: 8px;
+        text-align: center;
+    }
+
+    .download-row-sources i {
+        margin-right: 4px;
+    }
+
 }
