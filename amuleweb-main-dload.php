@@ -303,6 +303,11 @@
 
 							echo '<div class="downloads-desktop">';
 
+							echo '<div class="downloads-title">';
+							echo '    <i class="fa-solid fa-download"></i>';
+							echo '    <span>Descargas</span>';
+							echo '</div>';
+
 							renderDownloadDesktopHeader();
 
 							foreach ($downloads as $file) {

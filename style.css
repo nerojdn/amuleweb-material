@@ -497,8 +497,8 @@ a {
 }
 
 .results::-webkit-scrollbar-thumb {
-    background:        #64748b;
-    border-radius:        10px;
+    background: #64748b;
+    border-radius: 10px;
 }
 
 
@@ -818,141 +818,64 @@ a {
        Resultados en escritorio
     */
 
+    @media (min-width: 768px) {
+        
+        .results-header {
+            display: grid;
+            grid-template-columns: 40px 1fr 120px 100px;
+            align-items: center;
+            background: var(--bg-main);
+            padding: 12px;
+            border-radius: var(--radius);
+            border-bottom: 1px solid var(--border-color);
+            font-weight: bold;
+        }
 
-    .results-header {
+        .results-header a {
+            color: var(--text-muted);
+            text-decoration: none;
 
+            transition:
+                color .2s ease;
+        }
 
-        display: grid;
-
-
-        grid-template-columns:
-
-            40px 1fr 120px 100px;
-
-
-        align-items: center;
-
-
-        background:
-
-            var(--bg-main);
-
-
-        padding:
-
-            12px;
-
-
-        border-radius:
-
-            var(--radius);
-
-
-        border-bottom:
-
-            1px solid var(--border-color);
-
-
-        font-weight: bold;
-
-
+        .results-header a:hover {
+            color: var(--text-main);
+        }
+        
     }
-
-
-
-    .results-header a {
-
-
-        color:
-
-            var(--text-muted);
-
-
-        text-decoration: none;
-
-
-    }
-
-
 
     .card {
-
-
         display: grid;
-
-
-        grid-template-columns:
-
-            40px 1fr 120px 100px;
-
-
+        grid-template-columns: 40px 1fr 120px 100px;
         align-items: center;
-
-
     }
-
-
 
     .card-size,
     .card-sources {
-
-
         display: block;
-
-
     }
-
-
 
     .search-row {
-
-
         flex-direction: row;
-
-
         align-items: center;
-
-
     }
-
-
 
     .search-wrapper {
-
-
         flex: 1;
-
-
     }
-
-
 
     .search-row select {
-
-
         width: auto;
-
     }
-
-
 
     .btn {
-
-
         width: auto;
-
     }
-
-
 
     .actions {
-
-
         flex-direction: row;
-
     }
-
-
 }
 
 
@@ -1040,7 +963,7 @@ a {
    FIN CSS MOBILE-FIRST
    ========================================================= */
 
-   /* =========================================================
+/* =========================================================
    MOBILE SORT
 ========================================================= */
 
@@ -1186,13 +1109,13 @@ a {
     font-size: .95rem;
 }
 
-.sort-option > span {
+.sort-option>span {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-.sort-option > span i {
+.sort-option>span i {
     width: 20px;
 
     color: var(--text-muted);
@@ -1515,10 +1438,29 @@ a {
         display: none;
     }
 
-
     .downloads-desktop {
-        width: 100%;
-        margin-top: 15px;
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        background: var(--bg-panel);
+        padding: 15px;
+        border-radius: var(--radius);
+    }
+
+    .downloads-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 15px;
+        color: var(--text-main);
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    .downloads-title i {
+        color: var(--accent);
     }
 
     .downloads-header,
@@ -1526,14 +1468,7 @@ a {
         display: grid;
 
         grid-template-columns:
-            40px
-            minmax(250px, 1fr)
-            100px
-            110px
-            110px
-            100px
-            90px
-            120px;
+            40px minmax(250px, 1fr) 100px 110px 110px 100px 90px 120px;
 
         align-items: center;
     }
@@ -1544,18 +1479,14 @@ a {
        ========================= */
 
     .downloads-header {
-        min-height: 42px;
+        padding: 12px;
 
-        padding: 0 12px;
-
-        background: var(--bg-panel);
+        background: var(--bg-main);
 
         border-radius: var(--radius);
+        border-bottom: 1px solid var(--border-color);
 
-        font-size: .85rem;
-        font-weight: 600;
-
-        color: var(--text-muted);
+        font-weight: bold;
     }
 
     .downloads-header a {
@@ -1635,17 +1566,36 @@ a {
     .download-row-sources,
     .download-row-status {
         padding: 8px;
-
         text-align: center;
-
         color: var(--text-muted);
     }
 
 
     .download-row-sources i {
         margin-right: 4px;
-
         color: var(--accent);
+    }
+
+    .download-row-progress {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .desktop-progress {
+        width: 70px;
+        height: 6px;
+
+        background: var(--bg-main);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .desktop-progress-bar {
+        height: 100%;
+        background: var(--accent);
+        border-radius: inherit;
     }
 
 }
