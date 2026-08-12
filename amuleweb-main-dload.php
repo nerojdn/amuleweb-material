@@ -51,7 +51,7 @@
 		function selectAll(check)
 		{
 			var checkboxes = document.querySelectorAll(
-				'.download-card input[type="checkbox"]'
+				'.download-row input[type="checkbox"]'
 			);
 
 			checkboxes.forEach(function(checkbox) {
