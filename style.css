@@ -1508,20 +1508,24 @@ a {
 
     .download-row {
         min-height: 48px;
-
         padding: 0 12px;
-
         font-size: .9rem;
-
         border-radius: var(--radius);
 
         transition:
             background .2s ease,
-            transform .1s ease;
+            border-color .2s ease;
     }
 
     .download-row:hover {
         background: var(--bg-panel-hover);
+    }
+
+    .download-row.selected {
+        background: rgba(99, 102, 241, .15);
+
+        box-shadow:
+            inset 2px 0 0 var(--accent);
     }
 
 
@@ -1596,6 +1600,30 @@ a {
         height: 100%;
         background: var(--accent);
         border-radius: inherit;
+    }
+
+    .download-row-status {
+        font-weight: 500;
+    }
+
+    .download-row-status::before {
+        content: "";
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        margin-right: 6px;
+        border-radius: 50%;
+        background: var(--text-soft);
+    }
+
+    .download-row[data-status="Downloading"]
+    .download-row-status::before {
+        background: var(--success);
+    }
+
+    .download-row[data-status="Paused"]
+    .download-row-status::before {
+        background: var(--accent);
     }
 
 }

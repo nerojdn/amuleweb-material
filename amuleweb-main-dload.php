@@ -58,7 +58,8 @@
 				checkbox.checked = check.checked;
 			});
 
-			updateDownloadSelection();
+			updateMobileDownloadSelection();
+			updateDesktopDownloadSelection();
 		}
 	</script>
 	<link href="style.css" rel="stylesheet">
@@ -130,7 +131,7 @@
 								echo '<div class="downloads-header">
 
 										<div class="download-header-check">
-											<input type="checkbox" name="selectAllDownloads" onclick="selectAllDownloads(this)">
+											<input type="checkbox" name="selectAllDownloads" onclick="selectAll(this)">
 										</div>
 
 										<div class="download-header-name">
@@ -404,33 +405,35 @@
 			loadComponent("conn_info.php", "footer-stats");
 		}, 10000);
 		
-		document.querySelectorAll('.download-card').forEach(card => {
+		document.querySelectorAll('.download-card, .download-row').forEach(card => {
 
-		card.addEventListener('click', function (e) {
+			card.addEventListener('click', function (e) {
 
-			// Si hacemos click en el checkbox, no hacemos nada más (el evento ya se ha disparado)
-			if (e.target.tagName.toLowerCase() === 'input') {
-				updateDownloadSelection();
-				return;
-			}
-
-			const checkbox = card.querySelector('input[type="checkbox"]');
-
-			if (checkbox) {
-				checkbox.checked = !checkbox.checked;
-
-				if (checkbox.checked) {
-					card.classList.add("selected");
-				} else {
-					card.classList.remove("selected");
+				// Si hacemos click en el checkbox, no hacemos nada más (el evento ya se ha disparado)
+				if (e.target.tagName.toLowerCase() === 'input') {
+					updateMobileDownloadSelection();
+					updateDesktopDownloadSelection();
+					return;
 				}
 
-				updateDownloadSelection();
-			}
+				const checkbox = card.querySelector('input[type="checkbox"]');
+
+				if (checkbox) {
+					checkbox.checked = !checkbox.checked;
+
+					if (checkbox.checked) {
+						card.classList.add("selected");
+					} else {
+						card.classList.remove("selected");
+					}
+
+					updateMobileDownloadSelection();
+					updateDesktopDownloadSelection();
+				}
+
+			});
 
 		});
-
-	});
 
 	</script>
 

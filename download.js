@@ -62,7 +62,7 @@ function getDownloadActions(cards) {
 }
 
 
-function updateDownloadSelection() {
+function updateMobileDownloadSelection() {
 
     var selectedCards = getSelectedDownloadCards();
     var selectedCount = selectedCards.length;
@@ -107,6 +107,28 @@ function updateDownloadSelection() {
     }
 }
 
+function updateDesktopDownloadSelection() {
+
+    document.querySelectorAll('.download-row').forEach(function(row) {
+
+        var checkbox = row.querySelector(
+            'input[type="checkbox"]'
+        );
+
+        if (!checkbox) {
+            return;
+        }
+
+        row.classList.toggle(
+            'selected',
+            checkbox.checked
+        );
+
+    });
+
+}
+
 document.addEventListener('DOMContentLoaded', function() {
-    updateDownloadSelection();
+    updateMobileDownloadSelection();
+    updateDesktopDownloadSelection();
 });
