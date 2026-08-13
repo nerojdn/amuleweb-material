@@ -1438,7 +1438,7 @@ a {
         display: none;
     }
 
-    .downloads-desktop {
+    .downloads-desktop, .uploads-desktop {
         flex: 1;
         min-height: 0;
         display: flex;
@@ -1449,7 +1449,7 @@ a {
         border-radius: var(--radius);
     }
 
-    .downloads-title {
+    .downloads-title, .uploads-title {
         display: flex;
         align-items: center;
         gap: 8px;
@@ -1459,7 +1459,8 @@ a {
         font-weight: 600;
     }
 
-    .downloads-title i {
+    .downloads-title i,
+    .uploads-title i {
         color: var(--accent);
     }
 
@@ -1473,12 +1474,23 @@ a {
         align-items: center;
     }
 
+    .uploads-header,
+    .upload-row {
+        display: grid;
+
+        grid-template-columns:
+            minmax(450px, 1fr) minmax(150px, 0.4fr) 110px 110px 100px;
+
+        align-items: center;
+    }
+
 
     /* =========================
        CABECERA
        ========================= */
 
-    .downloads-header {
+    .downloads-header,
+    .uploads-header {
         padding: 12px;
 
         background: var(--bg-main);
@@ -1506,7 +1518,7 @@ a {
        FILAS
        ========================= */
 
-    .download-row {
+    .download-row, .upload-row {
         min-height: 48px;
         padding: 0 12px;
         font-size: .9rem;
@@ -1546,7 +1558,7 @@ a {
        NOMBRE
        ========================= */
 
-    .download-row-name {
+    .download-row-name, .upload-row-name {
         min-width: 0;
 
         padding: 8px 12px 8px 0;
@@ -1568,12 +1580,19 @@ a {
     .download-row-speed,
     .download-row-progress,
     .download-row-sources,
-    .download-row-status {
+    .download-row-status,
+    .upload-row-downloaded,
+    .upload-row-uploaded,
+    .upload-row-speed {
         padding: 8px;
         text-align: center;
         color: var(--text-muted);
     }
 
+    .upload-row-user {
+        padding: 8px;
+        color: var(--text-muted);
+    }
 
     .download-row-sources i {
         margin-right: 4px;
@@ -1639,6 +1658,7 @@ a {
         min-height: 52px;
 
         margin-top: 10px;
+        margin-bottom: 30px;
         padding: 8px 12px;
 
         background: var(--bg-main);

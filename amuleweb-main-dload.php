@@ -125,6 +125,52 @@
 								echo'</div>';
 							}
 
+							function renderMobileDownloadActions()
+							{
+								echo '<div id="mobileDownloadActions">
+
+										<div class="mobile-download-selection">
+											<i class="fa-solid fa-check"></i>
+											<span id="downloadSelectedCount">0</span>
+											<span>seleccionada(s)</span>
+										</div>
+
+										<div class="mobile-download-action-buttons">
+
+											<button
+												type="button"
+												data-action="pause"
+												class="mobile-download-action"
+												id="mobilePauseButton"
+												onclick="formCommandSubmit(' . "'pause'" . ')">
+												<i class="fa-solid fa-pause"></i>
+												<span>Pausar</span>
+											</button>
+
+											<button
+												type="button"
+												data-action="resume"
+												class="mobile-download-action"
+												id="mobileResumeButton"
+												onclick="formCommandSubmit(' . "'resume'" . ')">
+												<i class="fa-solid fa-play"></i>
+												<span>Reanudar</span>
+											</button>
+
+											<button
+												type="button"
+												data-action="cancel"
+												class="mobile-download-action mobile-download-action-danger"
+												onclick="formCommandSubmit(' . "'cancel'" . ')">
+												<i class="fa-solid fa-xmark"></i>
+												<span>Cancelar</span>
+											</button>
+
+										</div>
+
+									</div>';
+							}
+
 							function renderDownloadDesktopHeader()
 							{
 								echo '<div class="downloads-header">
@@ -162,6 +208,52 @@
 										</div>
 										
 									</div>';
+							}
+
+							function renderUploadDesktopHeader()
+							{
+								echo '<div class="uploads-header">
+
+										<div class="upload-header-name">Nombre</div>
+										<div class="upload-header-user">Usuario</div>
+										<div class="upload-header-uploaded">Subido</div>
+										<div class="upload-header-downloaded">Descargado</div>
+										<div class="upload-header-speed">Velocidad</div>
+										
+									</div>';
+							}
+
+							function renderUploadDesktop($file)
+							{
+								echo '<div class="upload-row">';
+
+								echo '    <div class="upload-row-name">';
+								echo          htmlspecialchars($file->name);
+								echo '    </div>';
+
+								echo '    <div class="upload-row-user">';
+								echo          htmlspecialchars($file->user_name);
+								echo '    </div>';
+
+								echo '    <div class="upload-row-uploaded">';
+								echo          CastToXBytes($file->xfer_up, $fakevar);
+								echo '    </div>';
+
+								echo '    <div class="upload-row-downloaded">';
+								echo          CastToXBytes($file->xfer_down, $fakevar);
+								echo '    </div>';
+
+								echo '    <div class="upload-row-speed">';
+
+								if ($file->xfer_speed > 0) {
+									echo CastToXBytes($file->xfer_speed, $fakevar) . '/s';
+								} else {
+									echo '-';
+								}
+
+								echo '    </div>';
+
+								echo '</div>';
 							}
 							
 							function renderDownloadDesktop($file)
@@ -230,6 +322,50 @@
 								echo '</div>';
 							}
 
+							function renderDesktopDownloadActions()
+							{
+								echo '<div id="desktopDownloadActions">
+
+										<div class="desktop-download-selection">
+											<i class="fa-solid fa-check"></i>
+											<span id="desktopDownloadSelectedCount">0</span>
+											<span>seleccionada(s)</span>
+										</div>
+
+										<div class="desktop-download-action-buttons">
+
+											<button
+												type="button"
+												data-action="pause"
+												class="desktop-download-action"
+												onclick="formCommandSubmit(' . "'pause'" . ')">
+												<i class="fa-solid fa-pause"></i>
+												<span>Pausar</span>
+											</button>
+
+											<button
+												type="button"
+												data-action="resume"
+												class="desktop-download-action"
+												onclick="formCommandSubmit(' . "'resume'" . ')">
+												<i class="fa-solid fa-play"></i>
+												<span>Reanudar</span>
+											</button>
+
+											<button
+												type="button"
+												data-action="cancel"
+												class="desktop-download-action desktop-download-action-danger"
+												onclick="formCommandSubmit(' . "'cancel'" . ')">
+												<i class="fa-solid fa-xmark"></i>
+												<span>Cancelar</span>
+											</button>
+
+										</div>
+
+									</div>';
+							}
+
 							function CastToXBytes($size, &$count) {
 								// Emit the raw byte count; the unit formatting is done
 								// client-side (see the js-size script at the end of the page).
@@ -259,6 +395,7 @@
 							}
 
 							$downloads = amule_load_vars("downloads");
+							$uploads = amule_load_vars("uploads");
 							$fakevar = 0; 
 							// Whitelist against the column keys my_cmp() actually understands
 							// (the switch() above). Anything not in the list is dropped to "",
@@ -301,6 +438,8 @@
 
 							echo '</div>';
 
+							renderMobileDownloadActions();
+
 							echo '<div class="downloads-desktop">';
 
 							echo '<div class="downloads-title">';
@@ -315,91 +454,24 @@
 							}
 
 							echo '</div>';
-						?>
 
-					<div id="mobileDownloadActions">
+							renderDesktopDownloadActions();
 
-						<div class="mobile-download-selection">
-							<i class="fa-solid fa-check"></i>
-							<span id="downloadSelectedCount">0</span>
-							<span>seleccionada(s)</span>
-						</div>
+							echo '<div class="uploads-desktop">';
 
-						<div class="mobile-download-action-buttons">
+							echo '<div class="uploads-title">';
+							echo '    <i class="fa-solid fa-upload"></i>';
+							echo '    <span>Subidas</span>';
+							echo '</div>';
 
-							<button
-								type="button"
-								data-action="pause"
-								class="mobile-download-action"
-								id="mobilePauseButton"
-								onclick="formCommandSubmit('pause')">
-								<i class="fa-solid fa-pause"></i>
-								<span>Pausar</span>
-							</button>
+							renderUploadDesktopHeader();
 
-							<button
-								type="button"
-								data-action="resume"
-								class="mobile-download-action"
-								id="mobileResumeButton"
-								onclick="formCommandSubmit('resume')">
-								<i class="fa-solid fa-play"></i>
-								<span>Reanudar</span>
-							</button>
+							foreach ($uploads as $file) {
+								renderUploadDesktop($file);
+							}
 
-							<button
-								type="button"
-								data-action="cancel"
-								class="mobile-download-action mobile-download-action-danger"
-								onclick="formCommandSubmit('cancel')">
-								<i class="fa-solid fa-xmark"></i>
-								<span>Cancelar</span>
-							</button>
-
-						</div>
-
-					</div>
-										
-					<div id="desktopDownloadActions">
-
-						<div class="desktop-download-selection">
-							<i class="fa-solid fa-check"></i>
-							<span id="desktopDownloadSelectedCount">0</span>
-							<span>seleccionada(s)</span>
-						</div>
-
-						<div class="desktop-download-action-buttons">
-
-							<button
-								type="button"
-								data-action="pause"
-								class="desktop-download-action"
-								onclick="formCommandSubmit('pause')">
-								<i class="fa-solid fa-pause"></i>
-								<span>Pausar</span>
-							</button>
-
-							<button
-								type="button"
-								data-action="resume"
-								class="desktop-download-action"
-								onclick="formCommandSubmit('resume')">
-								<i class="fa-solid fa-play"></i>
-								<span>Reanudar</span>
-							</button>
-
-							<button
-								type="button"
-								data-action="cancel"
-								class="desktop-download-action desktop-download-action-danger"
-								onclick="formCommandSubmit('cancel')">
-								<i class="fa-solid fa-xmark"></i>
-								<span>Cancelar</span>
-							</button>
-
-						</div>
-
-					</div>
+							echo '</div>';
+						?>	
 
 				</form>
 
