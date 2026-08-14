@@ -1,9 +1,4 @@
 <?php
-/*
-    Navegación común aMuleWeb
-    Desktop: sidebar
-    Mobile: bottom navigation
-*/
 
 echo "<div class='sidebar'>
 

@@ -512,7 +512,6 @@
 		loadComponent("navigation.php", "navigation-container");
 		loadComponent("conn_info.php", "footer-stats");
 
-		// refresco cada 10s (o usa $_SESSION["auto_refresh"] si quieres)
 		setInterval(function() {
 			loadComponent("conn_info.php", "footer-stats");
 		}, 10000);

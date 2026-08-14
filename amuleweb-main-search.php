@@ -1,6 +1,5 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
 <head>
     <title>aMule - Search</title>
     <meta charset="UTF-8">
@@ -131,9 +130,6 @@
 								return '<span class="js-size">' . $size . '</span>';
 							}
 
-							//
-							// declare it here, before any function reffered it in "global"
-							//
 							$sort_order;$sort_reverse;
 
 							function my_cmp($a, $b)
@@ -218,10 +214,6 @@
 
 								$sort_order = $sort_raw;
 
-								/*
-								* Mobile sort control can explicitly request a direction.
-								* Desktop keeps the original toggle behaviour.
-								*/
 								if ($sort_dir == "asc") {
 									$_SESSION["search_sort_reverse"] = 1;
 								} 
@@ -229,10 +221,6 @@
 									$_SESSION["search_sort_reverse"] = 0;
 								} 
 								else {
-									/*
-									* Desktop: conserva el comportamiento original,
-									* alternando la dirección al pulsar la columna.
-									*/
 									if ($_SESSION["search_sort_reverse"] == "") {
 										$_SESSION["search_sort_reverse"] = 0;
 									} 
@@ -424,7 +412,6 @@
 		loadComponent("navigation.php", "navigation-container");
 		loadComponent("conn_info.php", "footer-stats");
 
-		// refresco cada 10s (o usa $_SESSION["auto_refresh"] si quieres)
 		setInterval(function() {
 			loadComponent("conn_info.php", "footer-stats");
 		}, 10000);

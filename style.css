@@ -553,6 +553,7 @@ a {
 
 .card-sources i {
     margin-right: 5px;
+    color: var(--accent);
 }
 
 .file-name {
@@ -620,198 +621,64 @@ a {
         z-index: 100;
     }
 
-
-
     .content-area {
-
-
-        margin-left:
-
-            var(--sidebar-width);
-
-
+        margin-left: var(--sidebar-width);
     }
-
-
 
     .main {
-
-
-        padding:
-
-            20px;
-
-
+        padding: 20px;
     }
-
-
-
-    /*
-       Ocultar navegación móvil
-    */
-
 
     .bottom-nav {
-
         display: none;
-
     }
-
 
 
     /*
        Menu lateral
     */
-
-
     .sidebar-header {
-
-        padding:
-
-            16px;
-
-
-        font-size:
-
-            1.4rem;
-
-
-        font-weight:
-
-            bold;
-
-
-        border-bottom:
-
-            1px solid var(--border-color);
-
+        padding: 16px;
+        font-size: 1.4rem;
+        font-weight: bold;
+        border-bottom: 1px solid var(--border-color);
     }
-
-
 
     .sidebar-menu {
-
-
         display: flex;
-
-
         flex-direction: column;
-
-
-        padding:
-
-            10px 0;
-
-
+        padding: 10px 0;
         flex: 1;
-
-
     }
-
-
 
     .sidebar-menu a {
-
-
         display: flex;
-
-
         align-items: center;
-
-
-        gap:
-
-            12px;
-
-
-        padding:
-
-            12px 16px;
-
-
-        color:
-
-            var(--text-muted);
-
-
+        gap: 12px;
+        padding: 12px 16px;
+        color: var(--text-muted);
         text-decoration: none;
-
-
-        border-left:
-
-            3px solid transparent;
-
-
-        transition:
-
-            all .2s ease;
-
+        border-left: 3px solid transparent;
+        transition: all .2s ease;
     }
-
-
 
     .sidebar-menu a:hover {
-
-
-        background:
-
-            var(--bg-panel-hover);
-
-
-        color:
-
-            white;
-
+        background: var(--bg-panel-hover);
+        color: white;
     }
-
-
 
     .sidebar-menu a.active {
-
-
-        background:
-
-            rgba(99, 102, 241, .15);
-
-
-        color:
-
-            white;
-
-
-        border-left-color:
-
-            var(--accent);
-
-
+        background: rgba(99, 102, 241, .15);
+        color: white;
+        border-left-color: var(--accent);
     }
-
-
 
     .sidebar-footer {
-
-
-        padding:
-
-            12px 16px;
-
-
-        color:
-
-            var(--text-soft);
-
-
-        font-size:
-
-            .85rem;
-
-
-        border-top:
-
-            1px solid var(--border-color);
-
+        padding: 12px 16px;
+        color: var(--text-soft);
+        font-size: .85rem;
+        border-top: 1px solid var(--border-color);
     }
-
 
 
     /*
@@ -819,7 +686,7 @@ a {
     */
 
     @media (min-width: 768px) {
-        
+
         .results-header {
             display: grid;
             grid-template-columns: 40px 1fr 120px 100px;
@@ -842,7 +709,7 @@ a {
         .results-header a:hover {
             color: var(--text-main);
         }
-        
+
     }
 
     .card {
@@ -1207,7 +1074,9 @@ a {
     display: block;
 }
 
-.downloads-desktop {
+.downloads-desktop,
+#desktopDownloadActions,
+.uploads-desktop {
     display: none;
 }
 
@@ -1438,7 +1307,8 @@ a {
         display: none;
     }
 
-    .downloads-desktop, .uploads-desktop {
+    .downloads-desktop,
+    .uploads-desktop {
         flex: 1;
         min-height: 0;
         display: flex;
@@ -1449,7 +1319,8 @@ a {
         border-radius: var(--radius);
     }
 
-    .downloads-title, .uploads-title {
+    .downloads-title,
+    .uploads-title {
         display: flex;
         align-items: center;
         gap: 8px;
@@ -1518,7 +1389,8 @@ a {
        FILAS
        ========================= */
 
-    .download-row, .upload-row {
+    .download-row,
+    .upload-row {
         min-height: 48px;
         padding: 0 12px;
         font-size: .9rem;
@@ -1558,7 +1430,8 @@ a {
        NOMBRE
        ========================= */
 
-    .download-row-name, .upload-row-name {
+    .download-row-name,
+    .upload-row-name {
         min-width: 0;
 
         padding: 8px 12px 8px 0;
@@ -1635,13 +1508,11 @@ a {
         background: var(--text-soft);
     }
 
-    .download-row[data-status="Downloading"]
-    .download-row-status::before {
+    .download-row[data-status="Downloading"] .download-row-status::before {
         background: var(--success);
     }
 
-    .download-row[data-status="Paused"]
-    .download-row-status::before {
+    .download-row[data-status="Paused"] .download-row-status::before {
         background: var(--accent);
     }
 
@@ -1744,12 +1615,293 @@ a {
         border-color: var(--danger);
     }
 
+
+
+    /* ------------------------------------------------------------
+    Servers actions
+    ------------------------------------------------------------ */
+
+    .servers-actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 16px;
+    }
+
+    .servers-disconnect-form {
+        margin: 0;
+    }
+
+    .servers-disconnect-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* ------------------------------------------------------------
+    Desktop servers container
+    ------------------------------------------------------------ */
+
+    .servers-desktop {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        background: var(--bg-panel);
+        padding: 15px;
+        border-radius: var(--radius);
+    }
+
+
+    /* ------------------------------------------------------------
+    Servers title
+    ------------------------------------------------------------ */
+
+    .servers-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        margin-bottom: 12px;
+
+        font-size: 1.05rem;
+        font-weight: 600;
+    }
+
+
+    /* ------------------------------------------------------------
+    Desktop header
+    ------------------------------------------------------------ */
+
+    .servers-header,
+    .server-row {
+        display: grid;
+
+        grid-template-columns:
+            80px minmax(160px, 1.2fr) minmax(200px, 2fr) minmax(130px, 1fr) 120px 120px;
+
+        align-items: center;
+    }
+
+    .servers-header {
+        padding: 12px;
+
+        background: var(--bg-main);
+
+        border-radius: var(--radius);
+        border-bottom: 1px solid var(--border-color);
+
+        font-weight: bold;
+    }
+
+    .servers-header a {
+        color: var(--text-muted);
+        text-decoration: none;
+
+        transition:
+            color .2s ease;
+    }
+
+    .servers-header a:hover {
+        color: var(--text-main);
+    }
+
+    .server-row {
+        min-height: 48px;
+        padding: 0 12px;
+        font-size: .9rem;
+        border-radius: var(--radius);
+
+        transition:
+            background .2s ease,
+            border-color .2s ease;
+    }
+
+    .server-row:hover {
+        background: var(--bg-panel-hover);
+    }
+
+    .server-row.selected {
+        background: rgba(99, 102, 241, .15);
+
+        box-shadow:
+            inset 2px 0 0 var(--accent);
+    }
+
+
+    /* ------------------------------------------------------------
+    Header cells
+    ------------------------------------------------------------ */
+
+    .server-header-actions,
+    .server-header-name,
+    .server-header-description,
+    .server-header-address,
+    .server-header-users,
+    .server-header-files {
+        min-width: 0;
+    }
+
+
+    .server-header-actions {
+        text-align: center;
+    }
+
+
+    .server-header-users,
+    .server-header-files {
+        text-align: left;
+    }
+
+
+    .servers-header a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+
+    .servers-header a:hover {
+        text-decoration: underline;
+    }
+
+
+    /* ------------------------------------------------------------
+    Row cells
+    ------------------------------------------------------------ */
+
+    .server-row-name,
+    .server-row-description,
+    .server-row-address {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .server-row-name {
+        font-weight: 500;
+    }
+
+    .server-row-description {
+        opacity: 0.85;
+    }
+
+    .server-row-address {
+        font-family: monospace;
+        font-size: 0.9rem;
+    }
+
+    .server-row-users,
+    .server-row-files {
+        text-align: left;
+    }
+
+    .server-row-users i,
+    .server-row-files i {
+        color: var(--accent);
+    }
+
+    /* ------------------------------------------------------------
+    Server actions
+    ------------------------------------------------------------ */
+
+    .server-row-actions {
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 8px;
+    }
+
+
+    .server-action {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        width: 32px;
+        height: 32px;
+
+        border-radius: 6px;
+
+        text-decoration: none;
+
+        transition:
+            background-color 0.15s ease,
+            transform 0.15s ease;
+    }
+
+
+    .server-action:hover {
+        color: var(--success);
+        transform: translateY(-1px);
+    }
+
+    .server-action-danger:hover {
+        color: var(--danger);
+    }
+
+
+    /* ------------------------------------------------------------
+    Mobile placeholder
+    ------------------------------------------------------------ */
+
+    .servers-mobile {
+        display: none;
+    }
+
+
+    .servers-mobile-placeholder {
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 8px;
+
+        padding: 30px 20px;
+
+        opacity: 0.6;
+    }
+
+
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
 
-    #desktopDownloadActions {
+    /*
+     * FEAT 4.2 will activate the mobile cards.
+     *
+     * For now the desktop representation remains hidden and
+     * the mobile placeholder is shown.
+     */
+
+    .servers-desktop {
         display: none;
+    }
+
+
+    .servers-mobile {
+        display: block;
+    }
+
+
+    .servers-actions {
+        justify-content: stretch;
+    }
+
+
+    .servers-disconnect-form {
+        width: 100%;
+    }
+
+
+    .servers-disconnect-btn {
+        width: 100%;
+
+        justify-content: center;
     }
 
 }
