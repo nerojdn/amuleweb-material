@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="script.js"></script>
-	<script src="download.js"></script>
+	<script src="server.js"></script>
 
 		<?php
 			// Auto-refresh: reload on a timer, but skip while any checkbox is
@@ -36,6 +36,8 @@
 
                 <h1>Servidores</h1>
 
+				<div class="servers-results">
+
 				<?php  
 
 					function renderServerHeader()
@@ -64,7 +66,7 @@
 							</div>';
 					}
 					
-					function renderServer($server)
+					function renderServerDesktop($server)
 					{
 						echo '<div class="server-row">
 						
@@ -95,6 +97,82 @@
 							</div>
 
 						</div>';
+					}
+
+					function renderServerMobile($srv, $connected)
+					{
+						$connectedClass = $connected ? " connected" : "";
+
+						echo '<div
+								class="server-card"
+								data-ip="' . htmlspecialchars($srv->ip) . '"
+								data-port="' . htmlspecialchars($srv->port) . '">';
+
+						echo '    <div class="server-card-top">';
+
+						echo '        <div class="server-card-name">';
+						echo              htmlspecialchars($srv->name);
+						echo '        </div>';
+
+						if ($connected) {
+							echo '        <div class="server-card-connected">';
+							echo '            <i class="fa-solid fa-check"></i>';
+							echo '            <span>Conectado</span>';
+							echo '        </div>';
+						}
+
+						echo '    </div>';
+
+						echo '    <div class="server-card-description">';
+						echo          htmlspecialchars($srv->desc);
+						echo '    </div>';
+
+						echo '    <div class="server-card-address">';
+						echo          htmlspecialchars($srv->addr);
+						echo '    </div>';
+
+						echo '    <div class="server-card-info">';
+
+						echo '        <span>';
+						echo '            <i class="fa-solid fa-users"></i>';
+						echo              (int)$srv->users;
+						echo '        </span>';
+
+						echo '        <span>';
+						echo '            <i class="fa-solid fa-file"></i>';
+						echo              (int)$srv->files;
+						echo '        </span>';
+
+						echo '    </div>';
+
+						echo '</div>';
+					}
+
+					function renderMobileServerActions() {
+
+						echo '	<div id="mobileServerActions">
+
+									<div class="mobile-server-action-buttons">
+
+										<button
+											type="button"
+											class="mobile-server-action"
+											id="mobileServerConnectButton">
+											<i class="fa-solid fa-plug"></i>
+											<span>Conectar</span>
+										</button>
+
+										<button
+											type="button"
+											class="mobile-server-action mobile-server-action-danger"
+											id="mobileServerRemoveButton">
+											<i class="fa-solid fa-trash"></i>
+											<span>Eliminar</span>
+										</button>
+
+									</div>
+
+								</div>';
 					}
 
 					$sort_order;$sort_reverse;
@@ -161,15 +239,39 @@
 						usort(&$servers, "my_cmp");
 					}
 
+					$stats = amule_get_stats();
+
+					$connectedServerName = "";
+					$connectedServerAddr = "";
+
+					if ($stats["id"] != 0 && $stats["id"] != 0xffffffff) {
+						$connectedServerName = $stats["serv_name"];
+						$connectedServerAddr = $stats["serv_addr"];
+					}
+
 					echo '<div class="servers-desktop">';
 
 					renderServerHeader();
 
-					foreach ($servers as $server) {
-						renderServer($server);
+					foreach ($servers as $srv) {
+						renderServerDesktop($srv);		
 					}
 
 					echo '</div>';
+
+					echo '<div class="servers-mobile">';
+
+					foreach ($mobileServers as $srv) {
+						$connected = ($connectedServerAddr != "" && ('[' . $srv->addr . ']') == $connectedServerAddr);
+
+						renderServerMobile($srv, $connected);
+					}
+
+					echo '</div>';
+
+					echo '</div>'; //servers-results
+
+					renderMobileServerActions();
 
 				?>
 
