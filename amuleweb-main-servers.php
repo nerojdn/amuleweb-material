@@ -261,7 +261,7 @@
 
 					echo '<div class="servers-mobile">';
 
-					foreach ($mobileServers as $srv) {
+					foreach ($servers as $srv) {
 						$connected = ($connectedServerAddr != "" && ('[' . $srv->addr . ']') == $connectedServerAddr);
 
 						renderServerMobile($srv, $connected);
